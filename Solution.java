@@ -1,3 +1,7 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Solution {
     public void combineLetters(String curr, List<List<String>> list, List<String> result, int idx1, int idx2, int n) {
         if (curr.length() == n) {
@@ -31,18 +35,19 @@ public class Solution {
             map.put(i, list);
         }
 
-        int n = digits.length();
         List<List<String>> list = new ArrayList<>();
         List<String> result = new ArrayList<>();
         for (int i = 0; i < digits.length(); i++) {
-            list.add(map.get(digits.charAt(i) - '0'));
+            List<String> chars = map.get(digits.charAt(i) - '0');
+            if (chars != null) {
+                list.add(chars);
+            }
         }
 
+        int n = list.size();
         if (n > 0)
             combineLetters("", list, result, 0, 0, n);
 
         return result;
     }
-} combinationofphonenumber {
-    
 }
