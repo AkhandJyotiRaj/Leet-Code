@@ -27,6 +27,6 @@ class Solution {
         return inherhelper(height,left,right+1,Math.max(currentmax,(right-left)*Math.min(height[left],height[right])));
     }
 }
-*/ coantintwnumer {
+*/hard coantintwnumer {
     
 }
