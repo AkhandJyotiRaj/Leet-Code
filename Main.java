@@ -3,7 +3,7 @@ import java.util.*;
 public class Main {
     
     static int m, n;
-    static int emptyCount = 1; // includes the starting cell
+    static int emptyCount = 1; 
     static int result = 0;
 
     public static void main(String[] args) {
