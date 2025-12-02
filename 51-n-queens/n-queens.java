@@ -1,33 +1,60 @@
 class Solution {
-    public static void solve(int row,int n,boolean[] hashd1,boolean[] hashd2,boolean[] hash,List<List<String>> list,char[][] board){
-        if(row == n){
-            list.add(buildBoard(board));
+    List<List<String>> result=new ArrayList<>();
+    
+    public boolean valid(List<String> board,int row,int col){
+        for(int i=row;i>=0;i--){
+            if(board.get(i).charAt(col)=='Q'){
+                return false;
+            }
+        }
+
+        for(int i=row,j=col;i>=0 && j>=0;i--,j--){
+            if(board.get(i).charAt(j)=='Q'){
+                return false;
+            }
+        }
+        for(int i=row,j=col;i>=0 && j<board.size();i--,j++){
+            if(board.get(i).charAt(j)=='Q'){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void solve(List<String> board,int row){
+        if(row==board.size()){
+            result.add(new ArrayList<>(board));
             return;
         }
-        for(int col = 0;col < n;col++){
-            int d1 = col + row;
-            int d2 = row - col + n - 1;
-            if(hashd1[d1]||hashd2[d2]||hash[col]) continue;
-            board[row][col] = 'Q';
-            hashd1[d1] = hashd2[d2] = hash[col] = true;
-            solve(row + 1,n,hashd1,hashd2,hash,list,board);
-            board[row][col] = '.';
-            hashd1[d1] = hashd2[d2] = hash[col] = false;
+        for(int col=0;col<board.size();col++){
+            if(valid(board,row,col)){
+                StringBuilder sb=new StringBuilder(board.get(row));
+                sb.setCharAt(col,'Q');
+                board.set(row,sb.toString());
+                solve(board,row+1);
+                sb.setCharAt(col,'.');
+                board.set(row,sb.toString());
+            }
         }
+        
     }
-    private static List<String> buildBoard(char[][] board){
-        List<String> b = new ArrayList<>();
-        for(char[] row : board) b.add(new String(row));
-        return b;
-    }
+    
+    
+    
+    
     public List<List<String>> solveNQueens(int n) {
-        boolean hashd1[] = new boolean[n + n - 1];
-        boolean hashd2[] = new boolean[n + n - 1];
-        boolean hash[] = new boolean[n];
-        char[][] board = new char[n][n];
-        for(char[] row : board) Arrays.fill(row,'.');
-        List<List<String>> list = new ArrayList<>();
-        solve(0,n,hashd1,hashd2,hash,list,board);
-        return list;
+        if(n==0) return result;
+        List<String> board=new ArrayList<>();
+        
+        for(int i=0;i<n;i++){
+            StringBuilder sb=new StringBuilder();
+            for(int j=0;j<n;j++){
+                sb.append(".");
+            }
+            board.add(sb.toString());
+        }
+
+        solve(board,0);
+        return result;
     }
 }
