@@ -26,36 +26,61 @@
 // }
 
 
-class Solution {
-    public int minPathSum(int[][] grid) {
+// class Solution {
+//     public int minPathSum(int[][] grid) {
         
-        int m = grid.length;
-        int n = grid[0].length;
+//         int m = grid.length;
+//         int n = grid[0].length;
 
-        int[][] dp = new int[m][n];
+//         int[][] dp = new int[m][n];
 
-        for (int k = 0; k < m; k++) {
-            Arrays.fill(dp[k], -1);
-        }
+//         for (int k = 0; k < m; k++) {
+//             Arrays.fill(dp[k], -1);
+//         }
 
-        return minPathSum1(grid, m - 1 , n - 1, dp);
-    }
+//         return minPathSum1(grid, m - 1 , n - 1, dp);
+//     }
 
-    public int minPathSum1(int[][] grid, int m, int n, int[][] dp) {
-        if(m == 0 && n == 0) {
-            return grid[0][0];
-        } 
-        if(m < 0 || n < 0) {
-            return Integer.MAX_VALUE;
-        } 
+//     public int minPathSum1(int[][] grid, int m, int n, int[][] dp) {
+//         if(m == 0 && n == 0) {
+//             return grid[0][0];
+//         } 
+//         if(m < 0 || n < 0) {
+//             return Integer.MAX_VALUE;
+//         } 
 
-        if(dp[m][n] != -1) {
-            return dp[m][n];
-        }
+//         if(dp[m][n] != -1) {
+//             return dp[m][n];
+//         }
 
-        int up = minPathSum1(grid, m-1, n, dp);
-        int left = minPathSum1(grid, m, n-1, dp);
+//         int up = minPathSum1(grid, m-1, n, dp);
+//         int left = minPathSum1(grid, m, n-1, dp);
 
-        return dp[m][n] = grid[m][n] + Math.min(up, left);
-    }
+//         return dp[m][n] = grid[m][n] + Math.min(up, left);
+//     }
+// }
+
+
+class Solution {
+	public int minPathSum(int[][] grid) {
+
+		  // each cell of 2D array should contains the cost of path that will be minimum
+		  // from index[0][0] to that particular cell
+
+		for(int i=0; i<grid.length; i++) {
+			for(int j=0; j<grid[0].length; j++) {
+				if(i==0 && j!=0) {
+					grid[i][j] = grid[i][j] + grid[i][j-1];
+				}
+				if(j==0 && i!=0) {
+					grid[i][j] = grid[i][j] + grid[i-1][j];
+				}
+				if(i!=0 && j!=0) {
+					grid[i][j] = grid[i][j] + Math.min(grid[i-1][j], grid[i][j-1]);
+				}
+			}
+		}
+
+		return grid[grid.length-1][grid[0].length-1];
+	}
 }
