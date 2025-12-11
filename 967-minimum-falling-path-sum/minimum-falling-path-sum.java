@@ -1,30 +1,32 @@
 class Solution {
+    private static final int INF = 1_000_000_000; 
     public int minFallingPathSum(int[][] matrix) {
-        int n = matrix.length;
-        int m = matrix[0].length;
-        int min = Integer.MAX_VALUE;
-        int dp[][] = new int[n][m];
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int[][] dp = new int[row][col];
 
-        for (int col = 0; col < m; col++) {
-            dp[0][col] = matrix[0][col];
+        // Initialize first row
+        for (int i = 0; i < col; i++) {
+            dp[0][i] = matrix[0][i];
         }
 
-        for(int i=1; i<n; i++) {
-            for(int j=0; j<m; j++) {
-                int left = Integer.MAX_VALUE;
-                int right = Integer.MAX_VALUE;
-                int up = Integer.MAX_VALUE;
-                if(j-1 >= 0) left = matrix[i][j] + dp[i-1][j-1];
-                up = matrix[i][j] + dp[i-1][j];
-                if(j+1 < m) right = matrix[i][j] + dp[i-1][j+1];
-
-                dp[i][j] = Math.min(left, Math.min(up, right));
+        int[] dif = {-1, 0, 1};
+        for (int i = 1; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                int min = INF;
+                for (int d : dif) {
+                    if (j + d >= 0 && j + d < col) {
+                        min = Math.min(min, matrix[i][j] + dp[i-1][j+d]);
+                    }
+                }
+                dp[i][j] = min;
             }
         }
 
-        for(int i=0; i<m; i++) {
-            min = Math.min(min, dp[n-1][i]);
+        int ans = INF;
+        for (int i = 0; i < col; i++) {
+            ans = Math.min(ans, dp[row-1][i]);
         }
-        return min;
+        return ans;
     }
 }
