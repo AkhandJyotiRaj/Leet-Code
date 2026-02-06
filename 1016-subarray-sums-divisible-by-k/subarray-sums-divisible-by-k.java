@@ -13,9 +13,11 @@ class Solution {
             sum = sum + nums[j];
             int rem = sum % k;
             if(rem<0){
-                rem  +=k;
+                rem += k;
             }
-            count += map.getOrDefault(rem,0);
+            if(map.containsKey(rem)){ 
+                 count+=map.get(rem);
+                }
             map.put(rem,map.getOrDefault(rem,0)+1);  
             
         
