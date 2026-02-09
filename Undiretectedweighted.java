@@ -4,8 +4,9 @@ public class Undiretectedweighted {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int e = sc.nextInt();
+        
 
-        ArrayList<ArrayList<Pair>> adjLIst = new ArrayList();
+        ArrayList<ArrayList<Pair>> adjLIst = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             adjLIst.add(new ArrayList<>());
@@ -19,6 +20,14 @@ public class Undiretectedweighted {
             Pair curr = new Pair();
             curr.to = to1;
             curr.weight = weight1;
+
+            Pair curr1 = new Pair();
+            curr.to = from;
+            curr.weight = weight1;
+
+            adjLIst.get(from).add(curr); // directed -weighted graph
+            
+            /// undirected - weighted graph
         }
     }
 }
