@@ -108,4 +108,6 @@ public class Main {
             }
         }
 
-        System.out.printl
+        System.out.println("NO");
+    }
+}
