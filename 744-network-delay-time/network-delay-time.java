@@ -1,44 +1,48 @@
+import java.util.*;
+
 class Solution {
-    HashMap<Integer, HashMap<Integer, Integer>> map = new HashMap<>();
     public int networkDelayTime(int[][] times, int n, int k) {
-        for (int i = 1; i <= n; i++) {
-            map.put(i, new HashMap<>());
+        
+        List<List<int[]>> graph = new ArrayList<>();
+        for(int i = 0; i <= n; i++){
+            graph.add(new ArrayList<>());
         }
-        for (int i = 0; i < times.length; i++) {
-            map.get(times[i][0]).put(times[i][1], times[i][2]);
+        
+        for(int[] edge : times){
+            graph.get(edge[0]).add(new int[]{edge[1], edge[2]});
         }
-        int ans = BFS(k, n);
         
-        return ans == 1000 ? -1 : ans;
-    }
-    public int BFS(int k, int n) {
-        LinkedList<Integer> queue = new LinkedList<>();
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0;
         
-        int[] timeReach = new int[n + 1];
-        Arrays.fill(timeReach, 1000);
-        timeReach[0] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        pq.offer(new int[]{0, k});
         
-        timeReach[k] = 0;
-        
-        queue.add(k);
-        
-        while (!queue.isEmpty()) {
-            int rv = queue.remove();
-            for (int nbrs : map.get(rv).keySet()) {
-                int t = map.get(rv).get(nbrs) + timeReach[rv];
-                if (t < timeReach[nbrs]) {
-                    timeReach[nbrs] = t;
-                    queue.add(nbrs);
+        while(!pq.isEmpty()){
+            int[] curr = pq.poll();
+            int time = curr[0];
+            int node = curr[1];
+            
+            if(time > dist[node]) continue;
+            
+            for(int[] neighbor : graph.get(node)){
+                int next = neighbor[0];
+                int weight = neighbor[1];
+                
+                if(dist[node] + weight < dist[next]){
+                    dist[next] = dist[node] + weight;
+                    pq.offer(new int[]{dist[next], next});
                 }
             }
         }
         
-        int time = 0;
-        
-        for (int i : timeReach) {
-            time = Math.max(i, time);
+        int max = 0;
+        for(int i = 1; i <= n; i++){
+            if(dist[i] == Integer.MAX_VALUE) return -1;
+            max = Math.max(max, dist[i]);
         }
         
-        return time;
+        return max;
     }
 }
