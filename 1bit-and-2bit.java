@@ -7,5 +7,6 @@ class Solution {
         }
         
         return countOnes % 2 == 0;
+        
     }
 }
