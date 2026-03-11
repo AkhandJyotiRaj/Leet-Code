@@ -1,8 +1,10 @@
-# Write your MySQL query statement below
-
-WITH UniqueScores AS (
-    SELECT DISTINCT score
+WITH ranked_scores AS (
+    SELECT 
+        score,
+        DENSE_RANK() OVER (ORDER BY score DESC) AS `rank`
     FROM Scores
 )
- select score,Dense_rank() over (order by score desc) as "rank" 
- from scores;
+
+SELECT score, `rank`
+FROM ranked_scores
+ORDER BY score DESC;
