@@ -1,12 +1,18 @@
-# Write your MySQL query statement below
-SELECT d.name as department,
-    e.name as employee,
-    e.salary as salary
+WITH MaxSalary AS (
+    SELECT 
+        departmentId,
+        MAX(salary) AS max_salary
+    FROM Employee
+    GROUP BY departmentId
+)
 
-From employee e
-JOIN department d ON e.departmentid = d.id
-where e.salary = (
-    select max(salary)
-    from employee
-    where departmentid = e.departmentid
-);
+SELECT 
+    d.name AS Department,
+    e.name AS Employee,
+    e.salary AS Salary
+FROM Employee e
+JOIN MaxSalary m
+    ON e.departmentId = m.departmentId
+    AND e.salary = m.max_salary
+JOIN Department d
+    ON e.departmentId = d.id;
