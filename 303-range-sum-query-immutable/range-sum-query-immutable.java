@@ -1,19 +1,40 @@
 class NumArray {
-    int arr[];
+    private int[] seg;
+    private int[] num;
     public NumArray(int[] nums) {
-        arr = new int[nums.length];
-        arr[0] = nums[0];
-        for(int i = 1;i<nums.length;i++){
-            arr[i] =  arr[i-1] + nums[i];
-        }
+        int n = nums.length;
+        num = nums;
+        seg = new int[4*n];
+        build(0, 0, n-1);
     }
     
     public int sumRange(int left, int right) {
+        return query(0, 0, num.length-1, left, right);
+    }
+
+    int query(int ind, int low, int high, int l, int r){
+        if(low>=l && high<=r)// Total overlap
+            return seg[ind];
         
-        if(left==0) return arr[right];
-        return arr[right] - arr[left-1];
-        
-        
+        if(high<l || low>r) return 0; //no Overlap
+        //Partial overlap
+        int mid = (low+high)/2;
+        int left = query(2*ind+1, low, mid, l, r);
+        int right = query(2*ind+2, mid+1, high, l, r);
+
+        return left+right;
+    }
+
+    void build(int ind, int low, int high){
+        if(low==high){
+            seg[ind] = num[low];
+            return;
+        }
+        int mid = (low+high)/2;
+        build(2*ind+1, low, mid);
+        build(2*ind+2, mid+1, high);
+
+        seg[ind] = seg[2*ind+1]+seg[2*ind+2];
     }
 }
 
