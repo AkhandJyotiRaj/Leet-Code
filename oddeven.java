@@ -1,6 +1,7 @@
 public class oddeven {
     class Pair {
         int odd;
+        
         int even;
 
         Pair(int odd, int even) {
