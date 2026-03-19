@@ -68,6 +68,7 @@ public class RangeUpdateQueries {
 
         while (q-- > 0) {
             int type = fr.nextInt();
+            
             if (type == 1) {
                 int a = fr.nextInt();
                 int b = fr.nextInt();
