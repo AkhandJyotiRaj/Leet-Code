@@ -1,18 +1,24 @@
 class Solution {
-    int count  = 0;
     public int goodNodes(TreeNode root) {
-       dfs(root,root.val);
-       return count;
+        if(root == null){ return 0; }
+        int count = 1;
+        
+        count += dfs(root.left, root.val);
+        count += dfs(root.right, root.val);
+        return count;
     }
-
-
-    public void dfs(TreeNode node,int max){
-        if(node== null) return ;
-        if(node.val >= max)
-            count++;
-            max = Math.max(max,node.val);
-
-             dfs(node.left,max);
-             dfs(node.right,max);
+    
+    public int dfs(TreeNode root, int currentMax){
+        
+        int amount = 0; 
+        if(root == null){ return 0; }
+        if(root.val >= currentMax){
+            amount++; 
+            currentMax = root.val;
+        }
+        
+        amount += dfs(root.left, currentMax);
+        amount += dfs(root.right, currentMax);
+        return amount; 
     }
 }
