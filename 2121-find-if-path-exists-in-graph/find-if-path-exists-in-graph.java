@@ -1,32 +1,39 @@
 class Solution {
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        List<List<Integer>> arr=new ArrayList<>();
-        for(int i=0;i<n;i++)
-        {
-            arr.add(new ArrayList<>());
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+
+        for(int i = 0 ;i<n ;i++){
+            adj.add(new ArrayList<>());
         }
-        for(int i=0;i<edges.length;i++)
-        {
-            int u=edges[i][0];
-            int v=edges[i][1];
-            arr.get(u).add(v);
-            arr.get(v).add(u);
+
+        for( int i = 0; i<edges.length;i++){
+            int u = edges[i][0];
+            int V = edges[i][1];
+
+            adj.get(u).add(V);
+            adj.get(V).add(u);
         }
-        boolean b[]=new boolean[n];
-        Arrays.fill(b,false);
-        Queue<Integer>q =new LinkedList<>();
-        q.add(source);
-        b[source]=true;
-        while(q.size()!=0){
-            if(q.peek()==destination) return true;
-            for(int i:arr.get(q.peek())){
-                if(!b[i]){
-                    q.add(i);
-                    b[i]=true;
+        
+    
+        boolean visited[] = new boolean[n];
+        Queue<Integer> q = new LinkedList<>();
+
+        q.offer(source);
+        visited[source] = true;
+
+        while(!q.isEmpty()){
+            int node = q.poll();
+    
+
+            for(int edge:adj.get(node)){
+                if(!visited[edge]){
+                    visited[edge] = true;
+                    q.offer(edge);
                 }
             }
-            q.remove();
         }
-        return b[destination];
+        return visited[destination];
+
     }
 }
