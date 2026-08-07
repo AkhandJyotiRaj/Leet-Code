@@ -1,48 +1,35 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
         int n = isConnected.length;
-        DSU dsu = new DSU(n);
         
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                if (isConnected[i][j] == 1) {
-                    dsu.union(i, j);
+        boolean visited[] = new boolean[n];
+       
+        int count = 0;
+
+        for(int i = 0; i<n; i++){
+            if(!visited[i]){
+                helper(i, isConnected, visited, n);
+                count++;
+            }
+        }
+        return count;
+    }
+
+     public void helper(int start, int[][] isConnected, boolean visited[], int n){
+
+             Queue<Integer> q = new LinkedList<>();
+             q.offer(start);
+             visited[start] = true;
+
+             while(!q.isEmpty()){
+                int node = q.poll();
+
+                for(int i = 0;i<n;i++){
+                    if(isConnected[node][i] ==1 && !visited[i]){
+                        visited[i] = true;
+                        q.offer(i);
+                    }
                 }
-            }
-        }
-        
-        int provinces = 0;
-        for (int i = 0; i < n; i++) {
-            if (dsu.find(i) == i) {
-                provinces++;
-            }
-        }
-        return provinces;
-    }
-    
-    class DSU {
-        int[] parent;
-        
-        DSU(int n) {
-            parent = new int[n];
-            for (int i = 0; i < n; i++) {
-                parent[i] = i;
-            }
-        }
-        
-        int find(int x) {
-            if (x != parent[x]) {
-                parent[x] = find(parent[x]);
-            }
-            return parent[x];
-        }
-        
-        void union(int x, int y) {
-            int rx = find(x);
-            int ry = find(y);
-            if (rx != ry) {
-                parent[rx] = ry;
-            }
-        }
-    }
+             }
+     }
 }
