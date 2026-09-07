@@ -24,6 +24,9 @@ class Solution {
 
         while(!q.isEmpty()){
             int node = q.poll();
+            if(node == destination){
+                return true;
+            }
             for(int neigh : adj.get(node)){
                 if(!visited[neigh]){
                     visited[neigh] = true;
@@ -31,7 +34,7 @@ class Solution {
                 }
             }
         }
-        return visited[destination];
+        return false;
 
 
     }
